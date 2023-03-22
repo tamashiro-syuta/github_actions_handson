@@ -19,7 +19,7 @@ jobs:
           echo "The message is: default"
           message=default
       - name: overwrite the message
-        if: ${{ inputs.message }} = ''
+        if: ${{ github.event_name }} == "workflow_dispatch"
         run: |
           echo "The message is: ${{ inputs.message }}"
           message=${{ inputs.message }}
