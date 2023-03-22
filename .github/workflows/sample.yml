@@ -9,6 +9,7 @@ on:
       message:
         description: 'Please enter a message to print'
         required: true
+        default: ''
 
 jobs:
   build:
@@ -19,7 +20,7 @@ jobs:
           echo "The message is: default"
           message=default
       - name: overwrite the message
-        if: ${{ github.event_name }} == "workflow_dispatch"
+        if: ${{ inputs.message }} != ''
         run: |
           echo "The message is: ${{ inputs.message }}"
           message=${{ inputs.message }}
