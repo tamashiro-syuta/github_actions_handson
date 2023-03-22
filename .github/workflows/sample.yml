@@ -16,8 +16,8 @@ jobs:
     steps:
       - name: Print the message
         run: |
-          echo "The message is: ${{ inputs.message }}"
-          message=${{ inputs.message }}
+          echo "The message is: default"
+          message=default
       - name: overwrite the message
         if: ${{ inputs.message }} = ''
         run: |
