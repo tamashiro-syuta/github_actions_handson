@@ -17,3 +17,9 @@ jobs:
       - name: Print the message
         run: |
           echo "The message is: ${{ inputs.message }}"
+          message=${{ inputs.message }}
+      - name: overwrite the message
+        if: ${{ inputs.message }} = ''
+        run: |
+          echo "The message is: ${{ inputs.message }}"
+          message=${{ inputs.message }}
