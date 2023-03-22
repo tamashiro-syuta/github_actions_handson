@@ -1,0 +1,19 @@
+name: Manual Workflow
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+    inputs:
+      message:
+        description: 'Please enter a message to print'
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print the message
+        run: |
+          echo "The message is: ${{ inputs.message }}"
