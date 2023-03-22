@@ -24,4 +24,4 @@ jobs:
           echo "The message is: ${{ inputs.message }}"
           message=${{ inputs.message }}
       - name: display the message
-        run: echo $message
+        run: echo "message is $message"
