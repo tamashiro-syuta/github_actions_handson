@@ -1,9 +1,9 @@
 name: Manual Workflow
 
 on:
-  push:
-    branches:
-      - master
+  pull_request:
+    branches: master
+    types: [closed]
   workflow_dispatch:
     inputs:
       message:
