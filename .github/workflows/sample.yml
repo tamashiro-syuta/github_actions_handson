@@ -58,9 +58,9 @@ jobs:
 
       - name: Push git tag
         run: |
-          IMAGE_TAG=${{ steps.get-merge-user-info.outputs.version }}
+          IMAGE_TAG=${{ steps.get-version.outputs.version }}
           CURRENT_DATE=$(date +%Y/%m/%d)
-          git config user.name "${{ steps.get-version.outputs.author-name }}"
-          git config user.email "${{ steps.get-version.outputs.author-email }}"
+          git config user.name "${{ steps.get-merge-user-info.outputs.author-name }}"
+          git config user.email "${{ steps.get-merge-user-info.outputs.author-email }}"
           git tag -a $IMAGE_TAG -m 'master $CURRENT_DATE'
           git push origin $IMAGE_TAG
