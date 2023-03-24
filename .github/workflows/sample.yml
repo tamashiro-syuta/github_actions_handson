@@ -24,13 +24,15 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Get file content
+      - name: Get version
+        id: get-version
         run: |
-          FILE_CONTENT=$(cat demo_version.txt)
+          version=$(cat demo_version.txt)
+          echo "::set-output name=version::$version"
 
-      - name: echo file content
+      - name: Echo file content
         run: |
-          echo "File content: $FILE_CONTENT"
+          echo "File content: ${{ steps.get-version.outputs.version }}"
 
       - name: Print the message
         run: |
