@@ -45,3 +45,10 @@ jobs:
           message=${{ inputs.message }}
       - name: display the message
         run: echo "message is $message"
+
+      - name: Push git tag
+        run: |
+          IMAGE_TAG=${{ steps.get-version.outputs.version }}
+          CURRENT_DATE=$(date +%Y/%m/%d)
+          git tag -a $IMAGE_TAG -m 'demo_branch $CURRENT_DATE'
+          git push origin $IMAGE_TAG
