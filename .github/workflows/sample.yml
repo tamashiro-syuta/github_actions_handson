@@ -27,6 +27,9 @@ jobs:
       - name: Get file content
         run: |
           FILE_CONTENT=$(cat demo_version.txt)
+
+      - name: echo file content
+        run: |
           echo "File content: $FILE_CONTENT"
 
       - name: Print the message
