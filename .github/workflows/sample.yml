@@ -27,8 +27,8 @@ jobs:
       - name: Get version
         id: get-version
         run: |
-          version=$(cat demo_version.txt)
-          echo "::set-output name=version::$version"
+          VERSION=$(cat demo_version.txt)
+          echo "{version}={$VERSION}" >> $GITHUB_OUTPUT
 
       - name: Get merge user information
         id: get-merge-user-info
@@ -37,8 +37,8 @@ jobs:
         run: |
           AUTHOR_NAME=$(jq -r '.pull_request.merged_by.login' "$GITHUB_EVENT_PATH")
           AUTHOR_EMAIL=$(jq -r '.pull_request.merged_by.email' "$GITHUB_EVENT_PATH")
-          echo "::set-output name=author-name::$AUTHOR_NAME"
-          echo "::set-output name=author-email::$AUTHOR_EMAIL"
+          echo "{author-name}={$AUTHOR_NAME}" >> $GITHUB_OUTPUT
+          echo "{author-email}={$AUTHOR_EMAIL}" >> $GITHUB_OUTPUT
 
       - name: Push git tag
         run: |
