@@ -57,6 +57,8 @@ jobs:
           echo "::set-output name=author-email::$AUTHOR_EMAIL"
 
       - name: Push git tag
+        env:
+          GIT_TERMINAL_PROMPT: false
         run: |
           IMAGE_TAG=${{ steps.get-version.outputs.version }}
           CURRENT_DATE=$(date +%Y/%m/%d)
