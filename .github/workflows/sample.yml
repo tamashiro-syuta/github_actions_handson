@@ -30,22 +30,6 @@ jobs:
           version=$(cat demo_version.txt)
           echo "::set-output name=version::$version"
 
-      - name: Echo file content
-        run: |
-          echo "File content: ${{ steps.get-version.outputs.version }}"
-
-      - name: Print the message
-        run: |
-          echo "The message is: default"
-          message=default
-      - name: overwrite the message
-        if: ${{ inputs.message }} != ''
-        run: |
-          echo "The message is: ${{ inputs.message }}"
-          message=${{ inputs.message }}
-      - name: display the message
-        run: echo "message is $message"
-
       - name: Get merge user information
         id: get-merge-user-info
         env:
@@ -60,7 +44,7 @@ jobs:
         run: |
           IMAGE_TAG=${{ steps.get-version.outputs.version }}
           CURRENT_DATE=$(date +%Y/%m/%d)
-          git -c log.showSignature=false config user.name "${{ steps.get-merge-user-info.outputs.author-name }}"
-          git -c log.showSignature=false config user.email "${{ steps.get-merge-user-info.outputs.author-email }}"
+          git user.name "${{ steps.get-merge-user-info.outputs.author-name }}"
+          git config user.email "${{ steps.get-merge-user-info.outputs.author-email }}"
           git tag -a $IMAGE_TAG -m 'master $CURRENT_DATE'
           git push origin $IMAGE_TAG
