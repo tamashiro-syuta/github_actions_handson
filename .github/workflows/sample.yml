@@ -27,18 +27,19 @@ jobs:
       - name: Get version
         id: get-version
         run: |
-          value=$(cat demo_version.txt)
-          echo "{version}={value}" >> $GITHUB_OUTPUT
+          version=$(cat demo_version.txt)
+          echo "{version}=$version" >> $GITHUB_OUTPUT
 
       - name: Get merge user information
         id: get-merge-user-info
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          name=$(jq -r '.pull_request.merged_by.login' "$GITHUB_EVENT_PATH")
-          email=$(jq -r '.pull_request.merged_by.email' "$GITHUB_EVENT_PATH")
-          echo "{AUTHOR_NAME}={name}" >> $GITHUB_OUTPUT
-          echo "{AUTHOR_EMAIL}={email}" >> $GITHUB_OUTPUT
+          echo ${{ steps.get-version.outputs.version }}
+          AUTHOR_NAME=$(jq -r '.pull_request.merged_by.login' "$GITHUB_EVENT_PATH")
+          AUTHOR_EMAIL=$(jq -r '.pull_request.merged_by.email' "$GITHUB_EVENT_PATH")
+          echo "{author-name}=$AUTHOR_NAME" >> $GITHUB_OUTPUT
+          echo "{author-name}=$AUTHOR_EMAIL" >> $GITHUB_OUTPUT
 
       - name: Push git tag
         run: |
