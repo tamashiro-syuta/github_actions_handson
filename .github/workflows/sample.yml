@@ -30,21 +30,11 @@ jobs:
           version=$(cat demo_version.txt)
           echo "::set-output name=version::$version"
 
-      - name: Get merge user information
-        id: get-merge-user-info
+      - name: Push git tag
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          AUTHOR_NAME=$(jq -r '.pull_request.merged_by.login' "$GITHUB_EVENT_PATH")
-          AUTHOR_EMAIL=$(jq -r '.pull_request.merged_by.email' "$GITHUB_EVENT_PATH")
-          echo "::set-output name=author-name::$AUTHOR_NAME"
-          echo "::set-output name=author-email::$AUTHOR_EMAIL"
-
-      - name: Push git tag
-        run: |
           IMAGE_TAG=${{ steps.get-version.outputs.version }}
           CURRENT_DATE=$(date +%Y/%m/%d)
-          git config user.name "${{ steps.get-merge-user-info.outputs.author-name }}"
-          git config user.email "${{ steps.get-merge-user-info.outputs.author-email }}"
           git tag -a $IMAGE_TAG -m 'master $CURRENT_DATE'
           git push origin $IMAGE_TAG
