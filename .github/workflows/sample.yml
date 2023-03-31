@@ -4,19 +4,19 @@ on:
   pull_request:
     branches: master
     types: [closed]
-  workflow_dispatch:
-    inputs:
-      message:
-        description: 'Please enter a message to print'
-        required: true
-        default: ''
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+    permissions:
+      id-token: write
+      contents: write
     strategy:
       matrix:
         node-version: [16.x]
+    env:
+      BRANCH_NAME: ${{ github.event.pull_request.base.ref }}
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
@@ -30,11 +30,14 @@ jobs:
           version=$(cat demo_version.txt)
           echo "::set-output name=version::$version"
 
+      - run: |
+          echo "${{ env.BRANCH_NAME }}"
+
       - name: Push git tag
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           IMAGE_TAG=${{ steps.get-version.outputs.version }}
           CURRENT_DATE=$(date +%Y/%m/%d)
+          git config user.name github-actions[bot]
+          git config user.email github-actions[bot]@users.noreply.github.com
           git tag -a $IMAGE_TAG -m 'master $CURRENT_DATE'
           git push origin $IMAGE_TAG
