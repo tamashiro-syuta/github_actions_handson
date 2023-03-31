@@ -13,7 +13,6 @@ jobs:
     permissions:
       id-token: write
       contents: write
-      actions: write
     strategy:
       matrix:
         node-version: [16.x]
