@@ -1,21 +1,22 @@
 name: Manual Workflow
 
 on:
-  # 一時的にpushで動くようにする
-  # pull_request:
-  #   branches: master
-  #   types: [closed]
-  - push
+  pull_request:
+    branches: master
+    types: [closed]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
     permissions:
       id-token: write
       contents: write
     strategy:
       matrix:
         node-version: [16.x]
+    env:
+      BRANCH_NAME: ${{ github.event.pull_request.base.ref }}
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
@@ -28,6 +29,9 @@ jobs:
         run: |
           version=$(cat demo_version.txt)
           echo "::set-output name=version::$version"
+
+      - run: |
+          echo "${{ env.BRANCH_NAME }}"
 
       - name: Push git tag
         run: |
